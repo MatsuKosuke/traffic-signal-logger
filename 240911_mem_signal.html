@@ -14,10 +14,18 @@
             padding: 20px 20px;
             margin: 10px 0;
             font-size: 16px;
+            background-color: #80ddff;
             user-select: none; /* テキストの選択を無効化 */
             -webkit-user-select: none; /* iOS Safariのためのプレフィックス */
             -ms-user-select: none; /* 旧バージョンのIEのためのプレフィックス */
         }
+        button:disabled {
+            background-color: #f0f0f0;
+        }
+        button:active {
+            background-color: #aaeeff;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -43,9 +51,8 @@
 <button id="recordBtn" onclick="recordTiming()" disabled>次のタイミングを記録</button>
 <button id="downloadBtn" onclick="downloadFile()" disabled>データをダウンロード</button> -->
 <!-- クリックを話した瞬間に動作するようにする -->
-<button id="startBtn" onmouseup="startTiming()" ontouchend="startTiming()">開始</button>
-<button id="recordBtn" onmouseup="recordTiming()" ontouched="recordTiming()" disabled>次のタイミングを記録</button>
-<button id="downloadBtn" onmouseup="downloadFile()" ontouched="downloadFile()" disabled>データをダウンロード</button>
+<button id="startBtn" onmouseup="startTiming()" ontouchend="handleTouch(event, startTiming)">開始</button>
+<button id="recordBtn" onmouseup="recordTiming()" ontouched="handleTouch(event, recordTiming)" disabled>次のタイミングを記録</button>
 
 <table id="resultTable">
     <thead>
@@ -59,6 +66,9 @@
     </thead>
     <tbody></tbody>
 </table>
+
+<button id="downloadBtn" onmouseup="downloadFile()" ontouched="handleTouch(event, downloadFile)" disabled>データをダウンロード</button>
+
 
 <script>
     let messageList = [
@@ -76,6 +86,7 @@
     function startTiming() {
         document.getElementById('startBtn').disabled = true;
         document.getElementById('recordBtn').disabled = false;
+        document.getElementById('downloadBtn').disabled = false;
         startTime = Date.now();
         pastElapsedTime = 0;
         messageIndex = 0;
@@ -84,6 +95,14 @@
     }
 
     function recordTiming() {
+        // 最初の1回は，積算の時間を0にする
+        if (messageIndex === 0) {
+            startTime = Date.now();
+        }
+        // 一連のプロセス終了後の場合は，messageListに""を追加していく
+        if (messageIndex === messageList.length) {
+            messageList.push("");
+        }
         let currentTime = Date.now();
         let elapsedTime = (currentTime - startTime) / 1000;
         let diffTime = elapsedTime - pastElapsedTime;
@@ -117,8 +136,8 @@
         if (messageIndex < messageList.length) {
             document.getElementById('message').innerText = `次の動作: ${messageList[messageIndex]}`;
         } else {
-            document.getElementById('message').innerText = "すべての動作が完了しました。";
-            document.getElementById('recordBtn').disabled = true;
+            document.getElementById('message').innerText = "すべての動作が完了しました。引き続き記録を行うこともできます。";
+            document.getElementById('recordBtn').disabled = false;
             document.getElementById('downloadBtn').disabled = false;
         }
     }
