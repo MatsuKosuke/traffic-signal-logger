@@ -36,13 +36,13 @@
 <h1>信号のタイミング計測（お試し版）</h1>
 
 <p id="message">準備ができたら「開始」を押してください。</p>
-<button id="startBtn" onclick="startTiming()">開始</button>
+<!-- <button id="startBtn" onclick="startTiming()">開始</button>
 <button id="recordBtn" onclick="recordTiming()" disabled>次のタイミングを記録</button>
-<button id="downloadBtn" onclick="downloadFile()" disabled>データをダウンロード</button>
+<button id="downloadBtn" onclick="downloadFile()" disabled>データをダウンロード</button> -->
 <!-- クリックを話した瞬間に動作するようにする -->
-<!-- <button id="startBtn" onmouseup="startTiming()">開始</button>
-<button id="recordBtn" onmouseup="recordTiming()" disabled>次のタイミングを記録</button>
-<button id="downloadBtn" onmouseup="downloadFile()" disabled>データをダウンロード</button> -->
+<button id="startBtn" onmouseup="startTiming()" ontouchend="startTiming()">開始</button>
+<button id="recordBtn" onmouseup="recordTiming()" ontouched="recordTiming()" disabled>次のタイミングを記録</button>
+<button id="downloadBtn" onmouseup="downloadFile()" ontouched="downloadFile()" disabled>データをダウンロード</button>
 
 <table id="resultTable">
     <thead>
