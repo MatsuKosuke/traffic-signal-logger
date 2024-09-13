@@ -69,6 +69,13 @@
 
 <button id="downloadBtn" onmouseup="downloadFile()" ontouched="handleTouch(event, downloadFile)" disabled>データをダウンロード</button>
 
+<script>
+    function handleTouch(event, callback) {
+      event.preventDefault(); // デフォルトの長押し動作を無効化
+      callback(); // 指定された関数を実行
+    }
+</script>
+
 
 <script>
     let messageList = [
