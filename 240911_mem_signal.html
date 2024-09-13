@@ -117,7 +117,7 @@
         pastElapsedTime = 0;
         messageIndex = 0;
         timeData = [];
-        document.getElementById('message').innerText = `次の動作: ${messageList[messageIndex]}`;
+        document.getElementById('message').innerText = `指を離したタイミングで記録されます．\n次の動作: ${messageList[messageIndex]}`;
     }
 
     function recordTiming() {
@@ -160,7 +160,7 @@
         messageIndex++;
 
         if (messageIndex < messageList.length) {
-            document.getElementById('message').innerText = `次の動作: ${messageList[messageIndex]}`;
+            document.getElementById('message').innerText = `指を離したタイミングで記録されます．\n次の動作: ${messageList[messageIndex]}`;
         } else {
             document.getElementById('message').innerText = "すべての動作が完了しました。引き続き記録を行うこともできます。";
             document.getElementById('recordBtn').disabled = false;
