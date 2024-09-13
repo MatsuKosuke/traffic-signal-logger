@@ -51,8 +51,10 @@
 <button id="recordBtn" onclick="recordTiming()" disabled>次のタイミングを記録</button>
 <button id="downloadBtn" onclick="downloadFile()" disabled>データをダウンロード</button> -->
 <!-- クリックを話した瞬間に動作するようにする -->
-<button id="startBtn" onmouseup="startTiming()" ontouchend="handleTouch(event, startTiming)">開始</button>
-<button id="recordBtn" onmouseup="recordTiming()" ontouched="handleTouch(event, recordTiming)" disabled>次のタイミングを記録</button>
+<!-- <button id="startBtn" onmouseup="startTiming()" ontouchend="handleTouch(event, startTiming)">開始</button> -->
+<!-- <button id="recordBtn" onmouseup="recordTiming()" ontouched="handleTouch(event, recordTiming)" disabled>次のタイミングを記録</button> -->
+<button id="startBtn" onmouseup="startTiming()" ontouchstart="startTouch()" ontouchend="endTouch(startTiming)">開始</button>
+<button id="recordBtn" onmouseup="recordTiming()" ontouchstart="startTouch()" ontouchend="endTouch(recordTiming)" disabled>次のタイミングを記録</button>
 
 <table id="resultTable">
     <thead>
@@ -67,7 +69,11 @@
     <tbody></tbody>
 </table>
 
-<button id="downloadBtn" onmouseup="downloadFile()" ontouched="handleTouch(event, downloadFile)" disabled>データをダウンロード</button>
+<!-- <button id="downloadBtn" onmouseup="downloadFile()" ontouched="handleTouch(event, downloadFile)" disabled>データをダウンロード</button> -->
+
+<button id="downloadBtn" onmouseup="downloadFile()" ontouchstart="startTouch()" ontouchend="endTouch(downloadFile)" disabled>データをダウンロード</button>
+
+
 
 <script>
     function handleTouch(event, callback) {
@@ -89,6 +95,19 @@
     let startTime = 0;
     let pastElapsedTime = 0;
     let timeData = [];
+
+    let touchStarted = false;
+
+    function startTouch() {
+      touchStarted = true; // タッチが始まったことを記録
+    }
+
+    function endTouch(callback) {
+      if (touchStarted) {
+        touchStarted = false; // タッチが終了したことを記録
+        callback(); // 指定された関数を実行
+      }
+    }
 
     function startTiming() {
         document.getElementById('startBtn').disabled = true;
